@@ -15,29 +15,13 @@ $(document).ready(function() {
   socket.emit('join', nickname);
 
   var newMessage = function(data, me) {
-    var now = new Date(),
-        hours = now.getHours(),
-        mins = now.getMinutes(),
-        secs = now.getSeconds();
-
-    hours = ((hours < 10) ? "0" : "") + hours + ":";
-    mins = ((mins < 10) ? "0" : "") + mins + ":";
-    secs = ((secs < 10) ? "0" : "") + secs;
-
-    var currentTime = hours + mins + secs;
-
-    var who = $('<div class="who">').text(data.nickname + (me ? " (That's you!)" : ""));
-    var when = $('<div class="when">').text(currentTime);
+    var who = $('<div class="who">').text(data.nickname);
+    var when = $('<div class="when">').text(new Date().toString().substr(0, 24));
     var msg = $('<div class="msg">').text(data.msg);
 
     var header = $('<div class="header clearfix">').append(who).append(when);
 
-    var li;
-    if(me) { 
-      li = $('<li class="me">'); 
-    } else {
-      li = $('<li>');
-    }    
+    var li = $('<li>');    
     li.append(header);
     li.append(msg);
 
@@ -49,7 +33,8 @@ $(document).ready(function() {
         msg = msgField.val(),
         data = {
           msg: msg,
-          nickname: nickname
+          nickname: nickname,
+          when: new Date()
         };
 
     socket.emit('msg', data);

@@ -10,8 +10,9 @@
 h1 {
   margin: 0;
   padding: 10px; 
-  background-color: #aaa;
-  border-bottom: 1px solid #666;  
+  background-color: #253440;
+  color: #fff;
+  border-bottom: 1px solid #263237;  
 }
 
 form {
