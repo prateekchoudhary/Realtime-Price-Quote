@@ -1,0 +1,11 @@
+---
+applications:
+- name: bluemixchat
+  memory: 256M
+  instances: 1
+  host: bluemixchat
+  domain: mybluemix.net
+  path: .
+  command: npm start
+  services:
+    - redis01
