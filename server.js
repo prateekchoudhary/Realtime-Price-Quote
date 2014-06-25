@@ -19,11 +19,34 @@ if(process.env.VCAP_SERVICES) {
   credentials = { "host": "127.0.0.1", "port": 6379 }
 }
 // Connect to Redis
-var redisClient = redis.createClient(credentials.port, credentials.host);
-if('password' in credentials) {
-  // On BlueMix we need to authenticate against Redis
-  redisClient.auth(credentials.password);
-}
+var redisClient;
+
+var connectToRedis = function() {
+  redisClient = redis.createClient(credentials.port, credentials.host);
+  if('password' in credentials) {
+    // On BlueMix we need to authenticate against Redis
+    redisClient.auth(credentials.password);
+  }
+};
+connectToRedis();
+
+// There's an issue with the Redis client for Node where it
+// will time out every so often and hang the client browser
+// This code gets around this issue by reconnecting on timeout
+var refreshRedis = function() {
+  var replaceClient = function() {
+    redisClient.closing = true;
+    redisClient.end();
+
+    connectToRedis();
+    refreshRedis();
+  };
+
+  redisClient.once("end", function() {
+    replaceClient();
+  });
+};
+refreshRedis();
 
 // Configure Jade template engine
 var path = require('path');
