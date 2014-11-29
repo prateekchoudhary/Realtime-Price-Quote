@@ -2,23 +2,30 @@ doctype html
 html(lang='en')
   head
     meta(charset='utf-8')
-    title BlueMix Chat
+    title LetsPlanFor :: Bid Pool
     meta(name='viewport', content='initial-scale=1.0, width=device-width, \
       height=device-height, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no')
     link(rel='stylesheet', href='//cdn.jsdelivr.net/normalize/3.0.1/normalize.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')    
   body
-    h1 BlueMix Chat
+    h1 LetsPlanFor :: Bid Pool
     form
       input(id='msg', autocomplete='off', autofocus)
       button(type='submit') Send
+    div(class="notice")
+    ul.tableHead
+        li
+          .header.clearfix
+            .who= 'Company Name'
+            .msg= 'Current Bid Price'
+            .when= 'Last Updated Time'     
     ul#messages
       - for(var i=0,ln=messages.length;i<ln;i++)      
         li
-          .header.clearfix
-            .who= messages[i].nickname
-            .when= new Date(messages[i].when).toString().substr(0, 24)
-          .msg= messages[i].msg
+          div(class="header clearfix #{messages[i].username}")
+            .who= messages[i].username
+            .msg= messages[i].quote
+            .when= new Date(messages[i].time).toString().substr(0, 24)
     script(src='//cdn.jsdelivr.net/jquery/2.1.1/jquery.min.js')
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/client.js')

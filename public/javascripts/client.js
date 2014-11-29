@@ -1,8 +1,9 @@
 $(document).ready(function() {
   var socket = io(), nickname, msgList = $('#messages');
-
+  //Nishant Since I am not using any DB so I am treating nickname as a variable and stroing it inside browser localStorage
   // Check if nickname stored in localStorage
   if('localStorage' in window && localStorage.getItem('nickname')) {
+    //localStorage.removeItem("nickname");// Please uncomment this line if you want to reset the username refresh ur browser once choose new nickname
     nickname = localStorage.getItem('nickname');
   } else {
     // If not in localStorage, prompt user for nickname
@@ -19,11 +20,15 @@ $(document).ready(function() {
   var newMessage = function(data) {
     var who = $('<div class="who">').text(data.nickname),
         when = $('<div class="when">').text(new Date().toString().substr(0, 24)),
-        msg = $('<div class="msg">').text(data.msg),
-        header = $('<div class="header clearfix">').append(who).append(when),
-        li = $('<li>').append(header).append(msg);    
-
-    msgList.prepend(li);
+        msg = $('<div class="msg">').text(data.msg);
+	var tempClass = ".header.clearfix."+data.nickname;
+    	if($(tempClass).length == 0){
+	  header = $('<div class="header clearfix '+data.nickname+'">').append(who).append(msg).append(when),
+          li = $('<li>').append(header);
+          msgList.prepend(li);
+    	}else{
+	  $(tempClass).html('<div class="who">'+data.nickname+'</div><div class="msg">'+data.msg+'</div><div class="when">'+new Date().toString().substr(0, 24)+'</div>');
+        }
   };
 
   // Handle the form to submit a new message
@@ -47,6 +52,6 @@ $(document).ready(function() {
   // When a notice is received from the server
   // (user joins or disconnects), add it to the page
   socket.on('notice', function(msg) {
-    msgList.prepend($('<div class="notice">').text(msg));
+    $('.notice').html(msg);
   });
 });
