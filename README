@@ -1,0 +1,9 @@
+1. Unzip the package inside your node applications directory
+2. cd into the folder
+3. run `npm install` to install all nodejs dependancies as deifined inside package.json
+4. run `node server.js` on terminal 
+5. Open broswer at http://localhost:3001 to access the application
+
+
+TODO
+Sort bids as per different priorities:: bidprice, stars, feedback etc.
