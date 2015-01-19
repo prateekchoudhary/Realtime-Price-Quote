@@ -7,18 +7,6 @@ http.listen(process.env.PORT || 3001);
 // Redis client connection
 var redis = require('redis');
 var credentials = { "host": "127.0.0.1", "port": 6379 };
-// Check if we are in BlueMix or localhost
-/*
-if(process.env.VCAP_SERVICES) {
-  // On BlueMix read connection settings from
-  // VCAP_SERVICES environment variable
-  var env = JSON.parse(process.env.VCAP_SERVICES);
-  credentials = env['redis-2.6'][0]['credentials'];
-} else {
-  // On localhost just hardcode the connection details
-  credentials = { "host": "127.0.0.1", "port": 6379 }
-}
-*/
 var redisClient;
 var connectToRedis = function() {
   redisClient = redis.createClient(credentials.port, credentials.host);
@@ -79,39 +67,7 @@ app.get('/', function(req, res) {
       console.log(bidresult.length);
       res.render('index', { messages: bidresult });
   });
-	/* 
-      userresult.push(JSON.parse(users[user]));
-      var bidresult = [];
-      console.log('userresult = '+userresult[i].username);
-      redisClient.hgetall("username:"+userresult[i].username, function(errs, bid) {
-        if(!errs) {
-	  bidresult.push(JSON.stringify(bid));
-	  res.render('index', { messages: bidresult })
-          //console.log('bidresult = '+bidresult);
-        }
-      });
-	*/
-   // i++;
-   // }
-   // console.log('bidresult = '+bidresult);
-   // res.render('index', { messages: bidresult });
-  //}else res.render('index');
 
- /* 
-  redisClient.hgetall("username:pcs", function(err, reply) {
-    if(!err) {        
-      var result = [];
-      //console.log(reply);
-      result.push(reply);
-      // Loop through the list, parsing each item into an object
-      //for(var msg in reply) result.push(JSON.parse(reply[msg]));
-      console.log(result);
-      // Pass the message list to the view
-      res.render('index', { messages: result });    
-    } else res.render('index');
-   
-  });
-  */
 });
 
 // socket.io listen for messages
